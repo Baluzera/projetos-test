@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 <body>
     <nav class="navbar">
@@ -29,7 +30,6 @@
                 </svg>
             </button>
         </div>
-        <div class="tab-indicator"></div>
     </nav>
 
     <main class="content">
@@ -37,20 +37,16 @@
         <section class="tab-content active" id="musculacao">
             <div class="hero-section">
                 <h1>Musculação</h1>
-                <p>Escolha o grupo muscular que deseja trabalhar</p>
+                <p>Clique em uma região do corpo para ver os exercícios</p>
             </div>
 
             <div class="muscle-selector">
                 <div class="human-body-container">
-                    <div class="human-body" id="humanBody">
-                        <img src="assets/boneco-frente.svg" alt="Corpo humano - Frente" class="body-image active" data-view="frente">
-                        <img src="assets/boneco-lado.svg" alt="Corpo humano - Lateral" class="body-image" data-view="lado">
-                        <img src="assets/boneco-costas.svg" alt="Corpo humano - Costas" class="body-image" data-view="costas">
-                    </div>
-                    <div class="rotation-controls">
-                        <button class="rotate-btn" data-rotate="front">Frente</button>
-                        <button class="rotate-btn" data-rotate="side">Lado</button>
-                        <button class="rotate-btn" data-rotate="back">Costa</button>
+                    <div class="body3d-wrapper">
+                        <div id="body3d-container"></div>
+                        <div class="body-controls">
+                            <p class="drag-hint">🖱️ Arraste para girar | Clique em um músculo</p>
+                        </div>
                     </div>
                 </div>
 
@@ -58,19 +54,19 @@
                     <div class="muscle-category">
                         <h3>Superior</h3>
                         <div class="muscle-grid">
-                            <button class="muscle-btn" data-muscle="peito">Peito</button>
-                            <button class="muscle-btn" data-muscle="costas">Costas</button>
-                            <button class="muscle-btn" data-muscle="ombro">Ombro</button>
-                            <button class="muscle-btn" data-muscle="bracos">Braços</button>
-                            <button class="muscle-btn" data-muscle="abdomen">Abdômen</button>
+                            <button class="muscle-btn" data-tipo="peito" onclick="openMuscleModal('peito')">Peito</button>
+                            <button class="muscle-btn" data-tipo="costas" onclick="openMuscleModal('costas')">Costas</button>
+                            <button class="muscle-btn" data-tipo="ombro" onclick="openMuscleModal('ombro')">Ombro</button>
+                            <button class="muscle-btn" data-tipo="bracos" onclick="openMuscleModal('bracos')">Braços</button>
+                            <button class="muscle-btn" data-tipo="abdomen" onclick="openMuscleModal('abdomen')">Abdômen</button>
                         </div>
                     </div>
                     <div class="muscle-category">
                         <h3>Inferior</h3>
                         <div class="muscle-grid">
-                            <button class="muscle-btn" data-muscle="gluteos">Glúteos</button>
-                            <button class="muscle-btn" data-muscle="cochas">Coxas</button>
-                            <button class="muscle-btn" data-muscle="panturrilhas">Panturrilhas</button>
+                            <button class="muscle-btn" data-tipo="gluteos" onclick="openMuscleModal('gluteos')">Glúteos</button>
+                            <button class="muscle-btn" data-tipo="coxas" onclick="openMuscleModal('coxas')">Coxas</button>
+                            <button class="muscle-btn" data-tipo="panturrilhas" onclick="openMuscleModal('panturrilhas')">Panturrilhas</button>
                         </div>
                     </div>
                 </div>
@@ -99,84 +95,88 @@
                         <button class="distance-btn" data-distance="21k">21K</button>
                         <button class="distance-btn" data-distance="42k">42K</button>
                     </div>
+
                     <div class="plan-info" id="plan5k">
                         <h3>Plano 5K - Iniciante</h3>
                         <div class="plan-weeks">
                             <div class="week-card">
                                 <h4>Semana 1</h4>
-                                <p>Seg: 5min corrida / 3min caminando</p>
-                                <p>Qua: 5min corrida / 3min caminhada</p>
-                                <p>Sex: 5min corrida / 3min caminhada</p>
+                                <p>Seg: 5min corr / 3min cam</p>
+                                <p>Qua: 5min corr / 3min cam</p>
+                                <p>Sex: 5min corr / 3min cam</p>
                                 <p>Sáb: 5min corrida contínua</p>
                             </div>
                             <div class="week-card">
                                 <h4>Semana 2</h4>
-                                <p>Seg: 8min corrida / 2min caminhada</p>
-                                <p>Qua: 8min corrida / 2min caminhada</p>
-                                <p>Sex: 8min corrida / 2min caminhada</p>
-                                <p>Sáb: 10min corrida contínua</p>
+                                <p>Seg: 8min corr / 2min cam</p>
+                                <p>Qua: 8min corr / 2min cam</p>
+                                <p>Sex: 8min corr / 2min cam</p>
+                                <p>Sáb: 10min corrida</p>
                             </div>
                             <div class="week-card">
                                 <h4>Semana 3</h4>
-                                <p>Seg: 10min corrida / 2min caminhada</p>
-                                <p>Qua: 12min corrida contínua</p>
-                                <p>Sex: 10min corrida / 2min caminhada</p>
-                                <p>Sáb: 15min corrida contínua</p>
+                                <p>Seg: 10min corr / 2min</p>
+                                <p>Qua: 12min contínua</p>
+                                <p>Sex: 10min / 2min</p>
+                                <p>Sáb: 15min contínua</p>
                             </div>
                             <div class="week-card">
                                 <h4>Semana 4</h4>
                                 <p>Seg: 15min corrida</p>
                                 <p>Qua: 20min corrida</p>
                                 <p>Sex: 15min corrida</p>
-                                <p>Sáb: CORRIDA 5K!</p>
+                                <p>Sáb: 🏃 CORRIDA 5K!</p>
                             </div>
                         </div>
                     </div>
+
                     <div class="plan-info" id="plan10k" style="display:none;">
-                        <h3>Plano 10K - intermediário</h3>
+                        <h3>Plano 10K - Intermediário</h3>
                         <div class="plan-weeks">
                             <div class="week-card">
-                                <h4>Semana 1-2</h4>
+                                <h4>Semanas 1-2</h4>
                                 <p>Ter/Qua/Sex: 6km gradual</p>
                                 <p>Sáb: 8km ritmo fácil</p>
                             </div>
                             <div class="week-card">
-                                <h4>Semana 3-4</h4>
-                                <p>Ter/Qua/Sex: 8km</p>
+                                <h4>Semanas 3-4</h4>
+                                <p>Ter/Qwa/Sex: 8km</p>
                                 <p>Sáb: 10K contínuo</p>
                             </div>
                             <div class="week-card">
-                                <h4>Semana 5-6</h4>
-                                <p>Ter/Qwa/Sex: 10km com интерvals</p>
+                                <h4>Semanas 5-6</h4>
+                                <p>Ter/Qwa/Sex: 10km intervals</p>
                                 <p>Sáb: 12km</p>
                             </div>
                             <div class="week-card">
-                                <h4>Semana 7-8</h4>
+                                <h4>Semanas 7-8</h4>
                                 <p>Seg/Qua/Sex: 10km</p>
                                 <p>Sáb: 10K test</p>
                             </div>
                         </div>
                     </div>
+
                     <div class="plan-info" id="plan21k" style="display:none;">
                         <h3>Plano Meia Maratona</h3>
                         <div class="plan-weeks">
                             <div class="week-card">
                                 <h4>Semanas 1-4</h4>
-                                <p>Base: 10-12km 3xsemana</p>
-                                <p>Sáb: 15km ritmo fácil</p>
+                                <p>Base: 10-12km 3x/sem</p>
+                                <p>Sáb: 15km longão</p>
                             </div>
                             <div class="week-card">
                                 <h4>Semanas 5-8</h4>
-                                <p>Base: 12-15km 3xsemana</p>
+                                <p>Base: 12-15km 3x/sem</p>
                                 <p>Sáb: 18km longão</p>
                             </div>
                             <div class="week-card">
                                 <h4>Semanas 9-12</h4>
-                                <p>Intervals: 1km rápido / 1km leve</p>
+                                <p>Intervals: 1km rápido/1km</p>
                                 <p>Sáb: 21km</p>
                             </div>
                         </div>
                     </div>
+
                     <div class="plan-info" id="plan42k" style="display:none;">
                         <h3>Plano Maratona Completo</h3>
                         <div class="plan-weeks">
@@ -197,8 +197,8 @@
                             </div>
                             <div class="week-card">
                                 <h4>Fase 4 (Sem 13-16)</h4>
-                                <p>Taper: Redução gradual</p>
-                                <p>Sáb: 42K!</p>
+                                <p>Taper: Redução</p>
+                                <p>Sáb: 🏃 42K!</p>
                             </div>
                         </div>
                     </div>
@@ -218,12 +218,12 @@
                                 </select>
                             </label>
                             <label>
-                                Meta (horas:minutos):
+                                Meta (hh:mm):
                                 <input type="text" id="ritmoMeta" placeholder="00:50" value="00:50">
                             </label>
                             <button class="calc-btn" onclick="calcularRitmo()">Calcular</button>
                         </div>
-                        <div class="ritmo-result" id="ritmoResult">
+                        <div class="ritmo-result">
                             <p>Ritmo necessário: <span id="ritmoValor">--:--</span> /km</p>
                         </div>
                     </div>
@@ -235,7 +235,7 @@
                         <div class="shoes-types">
                             <div class="shoe-card">
                                 <h4>Neutro</h4>
-                                <p>Para pisada neutra</p>
+                                <p>Pisada neutra</p>
                                 <ul>
                                     <li>Nike Pegasus</li>
                                     <li>Brooks Ghost</li>
@@ -244,7 +244,7 @@
                             </div>
                             <div class="shoe-card">
                                 <h4>Estável</h4>
-                                <p>Para pronação leve</p>
+                                <p>Pronação leve</p>
                                 <ul>
                                     <li>Saucony Guide</li>
                                     <li>Brooks Adrenaline</li>
@@ -253,7 +253,7 @@
                             </div>
                             <div class="shoe-card">
                                 <h4>Correção</h4>
-                                <p>Para supinação</p>
+                                <p>Supinação</p>
                                 <ul>
                                     <li>Brooks Transcend</li>
                                     <li>Saucony Hurricane</li>
@@ -268,23 +268,23 @@
                         <h3>Dicas Essenciais</h3>
                         <div class="dica-item">
                             <h4>Alongamento Pré-Corrida</h4>
-                            <p> fazer alongamento dinâmico: pernas, quadris, tornozelos. 5-10 minutos.</p>
+                            <p>Faça dinâmico: pernas, quadris, tornozelos. 5-10 min.</p>
                         </div>
                         <div class="dica-item">
                             <h4>Alongamento Pós-Corrida</h4>
-                            <p>Alongamento estático mantendo 30 segundos por músculo. Focar em isquiotibiais,quadríceps,panturrilhas.</p>
+                            <p>Estático 30s por músculo. Isquiotibiais, quadríceps, panturrilhas.</p>
                         </div>
                         <div class="dica-item">
                             <h4>Alimentação</h4>
-                            <p>2-3 horas antes: carboidratos kompleksos. 30min antes: gel ou fruta.</p>
+                            <p>2-3h antes: carboidratos. 30min antes: gel ou fruta.</p>
                         </div>
                         <div class="dica-item">
                             <h4>Hidratação</h4>
-                            <p>200-500ml a cada 20min durante treino. Mais em dias quentes.</p>
+                            <p>200-500ml a cada 20min. Mais em dias quentes.</p>
                         </div>
                         <div class="dica-item">
                             <h4>Recuperação</h4>
-                            <p>Dormir 7-9 horas. Alongar. Massage. Descanso ativo leve.</p>
+                            <p>7-9h sono. Alongar. Massage. Descanso ativo.</p>
                         </div>
                     </div>
                 </div>
@@ -309,7 +309,7 @@
                     <h3>Posturas para Iniciantes</h3>
                     <div class="asana-grid">
                         <div class="asana-card">
-                            <div class="asana-image">🧘</div>
+                            <div class="asana-image">🐱</div>
                             <h4>Gato-Vaca</h4>
                             <p>Marjaharaasana</p>
                             <span class="asana-level">Iniciante</span>
@@ -339,9 +339,9 @@
                             <span class="asana-level">Iniciante</span>
                         </div>
                         <div class="asana-card">
-                            <div class="asana-image">🏹</div>
-                            <h4>Archer</h4>
-                            <p>Akarna Dhanurasana</p>
+                            <div class="asana-image">🦋</div>
+                            <h4>Borboleta</h4>
+                            <p>Baddha Konasana</p>
                             <span class="asana-level">Iniciante</span>
                         </div>
                     </div>
@@ -375,15 +375,15 @@
                             <span class="asana-level">Intermediário</span>
                         </div>
                         <div class="asana-card">
-                            <div class="asana-image">🦢</div>
-                            <h4>Cisne</h4>
-                            <p>Hamsasana</p>
+                            <div class="asana-image">🕰️</div>
+                            <h4>Meia Lua</h4>
+                            <p>Ardha Chandrasana</p>
                             <span class="asana-level">Intermediário</span>
                         </div>
                         <div class="asana-card">
-                            <div class="asana-image">🌙</div>
-                            <h4>Lua Crescente</h4>
-                            <p>Chandrabhadrasana</p>
+                            <div class="asana-image">🦩</div>
+                            <h4>Pombinho</h4>
+                            <p>Eka Pada Rajakapotasana</p>
                             <span class="asana-level">Intermediário</span>
                         </div>
                     </div>
@@ -475,15 +475,15 @@
                     <div class="pranayama-cards">
                         <div class="pranayama-card">
                             <h4>Ujjayi</h4>
-                            <p>Respiração vitoriosa. Respirar pelo nariz com restrição da glote. Produz som de oceano.</p>
+                            <p>Respiração victoriosa. Produz som de oceano.</p>
                         </div>
                         <div class="pranayama-card">
                             <h4>Nadi Shodhana</h4>
-                            <p>Respiração alternada pelas narinas. Limpa canais energéticos. 5 minutos.</p>
+                            <p>Respiração alternada. Limpa canais. 5 min.</p>
                         </div>
                         <div class="pranayama-card">
                             <h4>Kapalabhati</h4>
-                            <p>Respiração de limpeza. Exalações activas pelo nariz. Limpa pulmões.</p>
+                            <p>Respiração de limpeza. Limpa pulmões.</p>
                         </div>
                     </div>
                 </div>
@@ -512,22 +512,22 @@
                     <div class="stretch-grid">
                         <div class="stretch-card">
                             <h4>Flexão Lateral</h4>
-                            <p>Incline a cabeça para um lado, segure por 30 segundos. Repita do outro lado.</p>
+                            <p>Incline a cabeça, segure 30 segundos.</p>
                             <span class="stretch-type">Estático</span>
                         </div>
                         <div class="stretch-card">
                             <h4>Rotação</h4>
-                            <p>Gire a cabeça para um lado, segure 30 segundos. Repita.</p>
+                            <p>Gire a cabeça, segure 30 segundos.</p>
                             <span class="stretch-type">Estático</span>
                         </div>
                         <div class="stretch-card">
                             <h4>Queixo ao Peito</h4>
-                            <p>Leve o queixo ao peito, segure 30 segundos.</p>
+                            <p>Leve o queixo ao peito, segure 30s.</p>
                             <span class="stretch-type">Estático</span>
                         </div>
                         <div class="stretch-card">
                             <h4>Levantamento de Ombros</h4>
-                            <p>Levante os ombros até as orelhas, segure 5 segundos. Repita 10x.</p>
+                            <p>Levante os ombros, segure 5s. Repita 10x.</p>
                             <span class="stretch-type">Dinâmico</span>
                         </div>
                     </div>
@@ -538,22 +538,22 @@
                     <div class="stretch-grid">
                         <div class="stretch-card">
                             <h4>Cross-body</h4>
-                            <p>Puxe o braço pelo corpo, segure 30 segundos.</p>
+                            <p>Puxe o braço pelo corpo, segure 30s.</p>
                             <span class="stretch-type">Estático</span>
                         </div>
                         <div class="stretch-card">
                             <h4>Doorway</h4>
-                            <p>Encoste no batente, avance o corpo. Segure 30 segundos.</p>
+                            <p>Encoste no batente, avance. Segure 30s.</p>
                             <span class="stretch-type">Estático</span>
                         </div>
                         <div class="stretch-card">
                             <h4>Circulares</h4>
-                            <p>Gire os ombros para frente e para trás. 10 voltas cada.</p>
+                            <p>Gire os ombros. 10 voltas.</p>
                             <span class="stretch-type">Dinâmico</span>
                         </div>
                         <div class="stretch-card">
                             <h4>Overhead</h4>
-                            <p>Levante as mãos acima, entrelace. Alongue 30 segundos.</p>
+                            <p>Levante as mãos acima, alongue 30s.</p>
                             <span class="stretch-type">Estático</span>
                         </div>
                     </div>
@@ -564,22 +564,22 @@
                     <div class="stretch-grid">
                         <div class="stretch-card">
                             <h4>Gato-Vaca</h4>
-                            <p>Alternar entre arquear e concave a coluna. 10 repetições.</p>
+                            <p>Alternar arque/con cave. 10 repetições.</p>
                             <span class="stretch-type">Dinâmico</span>
                         </div>
                         <div class="stretch-card">
                             <h4>Torção Sentado</h4>
-                            <p>Sente, gire o tronco. Segure 30 segundos cada lado.</p>
+                            <p>Sente, gire o tronco. Segure 30s.</p>
                             <span class="stretch-type">Estático</span>
                         </div>
                         <div class="stretch-card">
                             <h4>Isquiotibiais</h4>
-                            <p>Sentado, estenda as pernas, segure os pés. Segure 30 segundos.</p>
+                            <p>Sentado, estenda as pernas. Segure 30s.</p>
                             <span class="stretch-type">Estático</span>
                         </div>
                         <div class="stretch-card">
                             <h4>Cobra</h4>
-                            <p>Deite, levante o tronco. Segure 30 segundos.</p>
+                            <p>Deite, levante o tronco. Segure 30s.</p>
                             <span class="stretch-type">Estático</span>
                         </div>
                     </div>
@@ -590,22 +590,22 @@
                     <div class="stretch-grid">
                         <div class="stretch-card">
                             <h4>Pigeon</h4>
-                            <p>Uma perna à frente dobrada, outra estendida. Segure 60 segundos.</p>
+                            <p>Uma perna à frente. Segure 60s.</p>
                             <span class="stretch-type">Estático</span>
                         </div>
                         <div class="stretch-card">
                             <h4>Borboleta</h4>
-                            <p>Sente, junte os pés, segure os tornozelos. Segure 60 segundos.</p>
+                            <p>Junte os pés. Segure 60 segundos.</p>
                             <span class="stretch-type">Estático</span>
                         </div>
                         <div class="stretch-card">
                             <h4>90/90</h4>
-                            <p>Sente com uma perna a 90° na frente. Segure 30 segundos.</p>
+                            <p>Sente com uma perna a 90°. Segure 30s.</p>
                             <span class="stretch-type">Estático</span>
                         </div>
                         <div class="stretch-card">
                             <h4>Adutores</h4>
-                            <p>Faça agachamento wide stance. Segure 60 segundos.</p>
+                            <p>Agachamento wide stance. Segure 60s.</p>
                             <span class="stretch-type">Estático</span>
                         </div>
                     </div>
@@ -616,17 +616,17 @@
                     <div class="stretch-grid">
                         <div class="stretch-card">
                             <h4>Quádriceps</h4>
-                            <p>Em pé, puxe o calcanhar ao glúteo. Segure 30 segundos.</p>
+                            <p>Puxe o calcanhar ao glúteo. Segure 30s.</p>
                             <span class="stretch-type">Estático</span>
                         </div>
                         <div class="stretch-card">
                             <h4>Isquiotibiais</h4>
-                            <p>Em pé, dobre para frente. Segure 30 segundos.</p>
+                            <p>Dobre para frente. Segure 30 segundos.</p>
                             <span class="stretch-type">Estático</span>
                         </div>
                         <div class="stretch-card">
                             <h4>Flexor do Quadril</h4>
-                            <p>Em lunge, baixe o joelho chão. Segure 30 segundos.</p>
+                            <p>Em lunge, baixe o joelho. Segure 30s.</p>
                             <span class="stretch-type">Estático</span>
                         </div>
                         <div class="stretch-card">
@@ -642,22 +642,22 @@
                     <div class="stretch-grid">
                         <div class="stretch-card">
                             <h4>Panturrilha</h4>
-                            <p>Em pé, frente contra parede. Segure 30 segundos.</p>
+                            <p>Frente contra parede. Segure 30 segundos.</p>
                             <span class="stretch-type">Estático</span>
                         </div>
                         <div class="stretch-card">
                             <h4>Sóleo</h4>
-                            <p>Mesmo exercício com joelho dobrado. Segure 30 segundos.</p>
+                            <p>Mesmo c/ joelho dobrado. Segure 30s.</p>
                             <span class="stretch-type">Estático</span>
                         </div>
                         <div class="stretch-card">
                             <h4>Circulatórios</h4>
-                            <p>Gire o tornozelo em círculos. 10 cada direção.</p>
+                            <p>Gire o tornozelo em círculos. 10 cada.</p>
                             <span class="stretch-type">Dinâmico</span>
                         </div>
                         <div class="stretch-card">
                             <h4>Tornozelo</h4>
-                            <p>Puxe o pé para cima com-toalha. Segure 30 segundos.</p>
+                            <p>Puxe o pé para cima. Segure 30s.</p>
                             <span class="stretch-type">Estático</span>
                         </div>
                     </div>
@@ -668,18 +668,18 @@
                     <div class="type-cards">
                         <div class="type-card">
                             <h4>Estático</h4>
-                            <p>Mantém a posição por 30-60 segundos. Melhor para pós-treino.</p>
-                            <span>Melhor após treino</span>
+                            <p>Mantém 30-60 segundos. Melhor pós-treino.</p>
+                            <span>Após treino</span>
                         </div>
                         <div class="type-card">
                             <h4>Dinâmico</h4>
-                            <p>Movimentos controlados através da amplitude. Melhor pré-treino.</p>
-                            <span>Melhor antes do treino</span>
+                            <p>Movimentos controlados. Melhor pré-treino.</p>
+                            <span>Antes do treino</span>
                         </div>
                         <div class="type-card">
                             <h4>FNP</h4>
-                            <p>Facilitação Neuromuscular Proprioceptiva. Avançado. Contrair e relaxar.</p>
-                            <span>Para atletas avançados</span>
+                            <p>Avançado. Contrair e relaxar.</p>
+                            <span>Atletas avançados</span>
                         </div>
                     </div>
                 </div>
@@ -687,32 +687,58 @@
         </section>
     </main>
 
-    <!-- MODAL EXERCÍCIO -->
-    <div class="modal-overlay" id="exerciseModal">
-        <div class="modal">
-            <button class="modal-close" onclick="closeModal()">&times;</button>
+    <!-- MODAL: SELEÇÃO DE MÚSCULO -->
+    <div class="modal-overlay" id="muscleModal">
+        <div class="modal muscle-modal">
+            <button class="modal-close" onclick="closeAllModals()">&times;</button>
             <div class="modal-header">
-                <h2 id="modalTitle">Nome do Exercício</h2>
-                <span class="modal-level" id="modalLevel">Iniciante</span>
+                <h2 id="muscleModalTitle">Grupo Muscular</h2>
             </div>
             <div class="modal-body">
-                <div class="modal-video" id="modalVideo">
-                    <iframe id="videoFrame" width="100%" height="315" src="" frameborder="0" allowfullscreen></iframe>
+                <p class="modal-subtitle">Escolha a porção:</p>
+                <div id="muscleList" class="muscle-list"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: LISTA DE EXERCÍCIOS -->
+    <div class="modal-overlay" id="exerciseListModal">
+        <div class="modal exercise-list-modal">
+            <button class="modal-close" onclick="closeAllModals()">&times;</button>
+            <div class="modal-header">
+                <h2 id="exerciseListTitle">Exercícios</h2>
+            </div>
+            <div class="modal-body">
+                <div id="exerciseList" class="exercise-list"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: DETALHE DO EXERCÍCIO -->
+    <div class="modal-overlay" id="exerciseDetailModal">
+        <div class="modal exercise-detail-modal">
+            <button class="modal-close" onclick="closeAllModals()">&times;</button>
+            <div class="modal-header">
+                <h2 id="exerciseDetailTitle">Exercício</h2>
+                <span class="modal-level" id="exerciseDetailLevel">Iniciante</span>
+            </div>
+            <div class="modal-body">
+                <div class="modal-video">
+                    <iframe id="exerciseDetailVideo" width="100%" height="250" src="" frameborder="0" allowfullscreen></iframe>
                 </div>
                 <div class="modal-info">
                     <h3>Como executar:</h3>
-                    <ol id="modalInstructions">
-                        <li>Instrução 1</li>
-                    </ol>
+                    <ol id="exerciseDetailInstructions"></ol>
                     <div class="modal-series">
                         <h3>Série Sugerida:</h3>
-                        <p id="modalSeries">3 series x 12 repetições</p>
+                        <p id="exerciseDetailSeries">3 x 12</p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
+    <script src="js/exercicios.js"></script>
     <script src="js/main.js"></script>
 </body>
 </html>
