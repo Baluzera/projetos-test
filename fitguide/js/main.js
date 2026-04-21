@@ -511,9 +511,16 @@ document.querySelectorAll('.region-btn').forEach(btn => {
 // MODAIS - FECHAR
 // ============================================
 
-function closeAllModals() {
-    document.querySelectorAll('.modal').forEach(m => m.classList.remove('active'));
-}
+window.closeAllModals = function() {
+    // Remove active de todos os modais overlay
+    document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active'));
+    
+    // Para o vídeo do iframe
+    const videoFrame = document.getElementById('exerciseDetailVideo');
+    if (videoFrame) {
+        videoFrame.src = '';
+    }
+};
 
 document.querySelectorAll('.modal-close, .modal-overlay').forEach(el => {
     el.addEventListener('click', (e) => {

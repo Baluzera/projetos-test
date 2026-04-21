@@ -776,23 +776,32 @@ input, select {
 
 .modal-close {
     position: absolute;
-    top: 16px;
-    right: 16px;
-    width: 32px;
-    height: 32px;
-    font-size: 24px;
+    top: 8px;
+    right: 8px;
+    width: 40px;
+    height: 40px;
+    font-size: 32px;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    transition: var(--transition);
-    z-index: 10;
+    transition: all 0.2s ease;
+    z-index: 100;
     color: var(--text-secondary);
+    background: transparent;
+    cursor: pointer;
+    line-height: 1;
+    border: none;
+    padding: 0;
 }
 
 .modal-close:hover {
     background: var(--bg-tertiary);
     color: var(--text-primary);
+}
+
+.modal-close:active {
+    transform: scale(0.95);
 }
 
 .modal-header {
