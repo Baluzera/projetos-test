@@ -1008,6 +1008,57 @@ input, select {
     .stretches-region { flex-wrap: wrap; }
 }
 
+/* WORKOUT GRID (HIIT, PILATES, FUNCIONAL) */
+.workout-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 24px 40px;
+}
+
+.workout-card {
+    background: var(--bg-secondary);
+    border-radius: var(--radius);
+    padding: 20px;
+    cursor: pointer;
+    transition: var(--transition);
+    text-align: left;
+}
+
+.workout-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow);
+}
+
+.workout-card h3 {
+    font-size: 16px;
+    margin-bottom: 8px;
+}
+
+.workout-card p {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-bottom: 10px;
+}
+
+.workout-level {
+    font-size: 11px;
+    padding: 4px 10px;
+    background: var(--accent);
+    border-radius: 12px;
+}
+
+.workout-content {
+    display: none;
+    padding: 0 24px 40px;
+}
+
+.workout-content.active {
+    display: block;
+}
+
 /* SCROLLBAR */
 ::-webkit-scrollbar {
     width: 6px;

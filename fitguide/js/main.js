@@ -555,6 +555,74 @@ themeToggle.addEventListener('click', () => {
 });
 
 // ============================================
+// INICIALIZAÇÃO DAS NOVAS ABAS
+// ============================================
+
+// Gerar HIIT
+const hiitContainer = document.getElementById('hiitContainer');
+if (hiitContainer && typeof hiit !== 'undefined') {
+    let html = '<div class="workout-grid">';
+    hiit.treinos.forEach((treino, i) => {
+        html += `
+            <div class="workout-card" onclick="showHiitDetail(${i})">
+                <h3>${treino.nome}</h3>
+                <p>${treino.duracao}</p>
+                <span class="workout-level">${treino.nivel}</span>
+            </div>
+        `;
+    });
+    html += '</div>';
+    hiitContainer.innerHTML = html;
+}
+
+// Gerar Pilates  
+const pilatesContainer = document.getElementById('pilatesContainer');
+if (pilatesContainer && typeof pilates !== 'undefined') {
+    let html = '<div class="level-selector">';
+    pilates.categorias.forEach((cat, i) => {
+        html += `<button class="level-btn ${i===0?'active':''}" data-pilates="${i}">${cat.nome}</button>`;
+    });
+    html += '</div>';
+    
+    pilates.categorias.forEach((cat, i) => {
+        html += `<div class="workout-content ${i===0?'active':''}" id="pilates${i}">`;
+        cat.ejercicios.forEach(ex => {
+            html += `
+                <div class="workout-card">
+                    <h3>${ex.nome}</h3>
+                    <p>${ex.duracao || ex.repeticoes}</p>
+                    <span class="workout-level">${ex.beneficios}</span>
+                </div>
+            `;
+        });
+        html += '</div>';
+    });
+    
+    pilatesContainer.innerHTML = html;
+}
+
+// Gerar Funcional
+const funcionalContainer = document.getElementById('funcionalContainer');
+if (funcionalContainer && typeof funcional !== 'undefined') {
+    let html = '';
+    funcional.categorias.forEach((cat, i) => {
+        html += `<h3>${cat.nome}</h3>`;
+        html += '<div class="workout-grid">';
+        cat.exercicios.forEach(ex => {
+            html += `
+                <div class="workout-card">
+                    <h3>${ex.nome}</h3>
+                    <p>${ex.duracao || ex.repeticoes}</p>
+                    <span class="workout-level">${ex.beneficios || ex.fundamentals}</span>
+                </div>
+            `;
+        });
+        html += '</div>';
+    });
+    funcionalContainer.innerHTML = html;
+}
+
+// ============================================
 // INICIALIZAÇÃO
 // ============================================
 
