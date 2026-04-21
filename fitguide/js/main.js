@@ -606,7 +606,7 @@ if (pilatesContainer && typeof pilates !== 'undefined') {
     
     pilates.categorias.forEach((cat, i) => {
         html += `<div class="workout-content ${i===0?'active':''}" id="pilates${i}">`;
-        cat.ejercicios.forEach(ex => {
+        cat.exercicios.forEach(ex => {
             html += `
                 <div class="workout-card">
                     <h3>${ex.nome}</h3>
