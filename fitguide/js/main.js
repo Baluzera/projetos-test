@@ -421,6 +421,26 @@ function showExerciseDetail(index, tipo, subdivisao) {
     const svgImage = getImagemExercicio(ex.nome);
     imageContainer.innerHTML = svgImage;
 
+    // Adicionar botão de favorito se disponível
+    const titleEl = document.getElementById('exerciseDetailTitle');
+    if (titleEl && !document.getElementById('favBtn')) {
+        const favBtn = document.createElement('button');
+        favBtn.id = 'favBtn';
+        favBtn.innerHTML = Favoritos.eFavorito(ex.nome) ? '❤️' : '🤍';
+        favBtn.style.cssText = 'position:absolute;top:24px;right:60px;font-size:20px;background:none;border:none;cursor:pointer';
+        favBtn.onclick = function() {
+            if (Favoritos.eFavorito(ex.nome)) {
+                Favoritos.remover(ex.nome);
+                favBtn.innerHTML = '🤍';
+            } else {
+                Favoritos.adicionar(ex.nome);
+                favBtn.innerHTML = '❤️';
+            }
+            atualizarListaFavoritos();
+        };
+        titleEl.parentNode.appendChild(favBtn);
+    }
+
     document.getElementById('exerciseListModal').classList.remove('active');
     modal.classList.add('active');
 }
