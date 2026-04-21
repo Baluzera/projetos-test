@@ -409,12 +409,17 @@ function showExerciseDetail(index, tipo, subdivisao) {
     const series = document.getElementById('exerciseDetailSeries');
     const instructions = document.getElementById('exerciseDetailInstructions');
     const videoFrame = document.getElementById('exerciseDetailVideo');
+    const imageContainer = document.getElementById('exerciseImageContainer');
 
     title.textContent = ex.nome;
     level.textContent = ex.nivel;
     series.textContent = ex.series;
     instructions.innerHTML = ex.instrucoes.map(i => `<li>${i}</li>`).join('');
     videoFrame.src = ex.video;
+
+    // Inserir imagem estilo adesivo
+    const svgImage = getImagemExercicio(ex.nome);
+    imageContainer.innerHTML = svgImage;
 
     document.getElementById('exerciseListModal').classList.remove('active');
     modal.classList.add('active');

@@ -826,6 +826,19 @@ input, select {
     padding: 20px 24px 24px;
 }
 
+.modal-image {
+    margin-bottom: 16px;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    background: #1a1a2e;
+}
+
+.modal-image svg {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
 .modal-subtitle {
     font-size: 14px;
     color: var(--text-secondary);
